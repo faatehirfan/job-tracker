@@ -28,16 +28,16 @@ class JobApplication extends Model
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected function casts(): array //tukar bahasa php kepada bahasa database and vice versa.
     {
         return [
-            'status' => ApplicationStatus::class,
+            'status' => ApplicationStatus::class, // 'nama_kolum_database' => NamaFailEnum::class
             'applied_on' => 'date',
         ];
     }
 
-    public function company(): BelongsTo
+    public function company(): BelongsTo //1 job application belongs to 1 company.
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class); //supaya boleh access data between 2 tables.
     }
 }

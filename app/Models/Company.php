@@ -18,7 +18,7 @@ class Company extends Model
         'location',
     ];
 
-    public function jobApplications(): HasMany
+    public function jobApplications(): HasMany //1 company has many job application.
     {
         return $this->hasMany(JobApplication::class);
     }

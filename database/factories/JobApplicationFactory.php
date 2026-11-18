@@ -39,4 +39,26 @@ class JobApplicationFactory extends Factory
             ]),
         ];
     }
+
+    /**
+     * The application has been sent.
+     */
+    public function applied(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => ApplicationStatus::Applied,
+            'applied_on' => fake()->dateTimeBetween('-30 days', 'now'),
+        ]);
+    }
+
+    /**
+     * The company has invited you to interview.
+     */
+    public function interviewing(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => ApplicationStatus::Interviewing,
+            'applied_on' => fake()->dateTimeBetween('-60 days', '-7 days'),
+        ]);
+    }
 }
