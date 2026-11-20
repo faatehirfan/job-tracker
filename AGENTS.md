@@ -1,47 +1,63 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# AGENTS.md
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+Instructions for AI coding agents working in this repository. Written by hand.
 
-## Prerequisites
+## What this is
 
-Verify that PHP and Composer are available:
+`job-tracker`: a Laravel 13 web app that tracks my job hunt. Companies have many job applications;
+each application has a status (wishlist, applied, interviewing, offer, rejected). Plain Blade views
+styled by simple.css from a CDN. No starter kit, no front-end build step, no JavaScript.
 
-```sh
-php -v
-composer -V
-```
+## Stack
 
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
+- PHP 8.5, Laravel 13, SQLite (`database/database.sqlite`, not committed). Served locally by Laravel
+  Herd at `http://job-tracker.test`.
+- Tests: Pest with `RefreshDatabase`, against an in-memory SQLite database (see `phpunit.xml`).
+- Style: Pint (Laravel preset). Static analysis: Larastan, level 5 (`phpstan.neon`).
 
-macOS:
+## Commands
 
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
+- Install: `composer install`, then `cp .env.example .env` and `php artisan key:generate`
+- Database: `php artisan migrate`, then `php artisan db:seed` for sample data
+- Test: `php artisan test`
+- Lint: `composer lint` (Pint `--test`, then PHPStan with `--memory-limit=1G`)
+- Fix style: `composer fix`
 
-Windows PowerShell:
+CI (`.github/workflows/ci.yml`) runs Pint, PHPStan and the tests. A change is done when all three pass.
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
+## Layout
 
-Linux:
+- `app/Enums/ApplicationStatus.php`: the five statuses, stored as strings, with `label()`.
+- `app/Models/`: `Company` (hasMany `jobApplications`) and `JobApplication` (belongsTo `company`).
+- `app/Http/Controllers/`: `JobApplicationController` (all 7 resource actions) and `CompanyController`
+  (index, create, store, show). Validation is inline with `$request->validate([...])`.
+- `routes/web.php`: `/` redirects to `applications.index`; two `Route::resource` lines.
+- `resources/views/`: `layouts/app.blade.php` plus `applications/` and `companies/` views. Views use
+  `@extends('layouts.app')` and `@section('content')`. The application form is the `_form` partial.
+- `database/migrations/`, `database/factories/`, `database/seeders/DatabaseSeeder.php`.
+- `tests/Feature/`: one file per controller, plus `JobApplicationValidationTest.php`.
 
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
+## Conventions
 
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
+- Follow the code that `php artisan make:*` generates (no `declare(strict_types=1)` in this repo).
+- Models use the `$fillable` property and the `casts()` method. Statuses are always
+  `ApplicationStatus` cases in PHP code, never bare strings.
+- Every list page eager-loads what its view uses (`with('company')`). Lazy loading throws outside
+  production (`Model::preventLazyLoading()` in `AppServiceProvider`).
+- Money is whole ringgit per month, stored as unsigned integers.
+- Every controller action has a feature test. Test names describe behaviour.
+- English everywhere: code, comments, commit messages, PR descriptions.
 
-## Agent Setup
+## Never do this
 
-Install Laravel Boost from the application root before making application changes:
+- Never edit a migration that has already run or been pushed. Write a new migration instead.
+- Never run `php artisan migrate:fresh`, `migrate:reset`, `migrate:rollback`, `db:wipe`,
+  `git reset --hard` or `rm -rf`. They destroy data or work. Ask me, and I will run them myself.
+- Never read, print or edit `.env`. It holds the app key.
+- Never edit `vendor/`, `composer.lock` by hand, or `.github/workflows/ci.yml` (the cohort template).
 
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
+## How to help me
 
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
+I am learning Laravel (Phase 1 of the residency). Explain and point me to the file and line; do not
+write or edit the code for me, because I type it myself. In plan mode, list the files you would touch
+and why, and stop there.
