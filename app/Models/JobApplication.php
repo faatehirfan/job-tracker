@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobApplication extends Model
 {
-    /** @use HasFactory<\Database\Factories\JobApplicationFactory> */
+    /** @use HasFactory<JobApplicationFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -28,7 +28,7 @@ class JobApplication extends Model
      *
      * @return array<string, string>
      */
-    protected function casts(): array //tukar bahasa php kepada bahasa database and vice versa.
+    protected function casts(): array // tukar bahasa php kepada bahasa database and vice versa.
     {
         return [
             'status' => ApplicationStatus::class, // 'nama_kolum_database' => NamaFailEnum::class
@@ -36,8 +36,8 @@ class JobApplication extends Model
         ];
     }
 
-    public function company(): BelongsTo //1 job application belongs to 1 company.
+    public function company(): BelongsTo // 1 job application belongs to 1 company.
     {
-        return $this->belongsTo(Company::class); //supaya boleh access data between 2 tables.
+        return $this->belongsTo(Company::class); // supaya boleh access data between 2 tables.
     }
 }

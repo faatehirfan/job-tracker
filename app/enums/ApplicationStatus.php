@@ -10,7 +10,7 @@ enum ApplicationStatus: string
     case Offer = 'offer';
     case Rejected = 'rejected';
 
-    public function label(): string //users kat web punye view, user akan nampak belah kanan '...'
+    public function label(): string // users kat web punye view, user akan nampak belah kanan '...'
     {
         return match ($this) {
             self::Wishlist => 'Wishlist',

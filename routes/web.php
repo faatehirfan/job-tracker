@@ -8,6 +8,5 @@ Route::get('/', function () {
     return redirect()->route('applications.index');
 });
 
-Route::resource('applications', JobApplicationController::class); //semua method ade
-Route::resource('companies', CompanyController::class)->only(['index', 'create', 'store', 'show']); //only 4 methods.
-
+Route::resource('applications', JobApplicationController::class); // semua method ade
+Route::resource('companies', CompanyController::class)->only(['index', 'create', 'store', 'show']); // only 4 methods.

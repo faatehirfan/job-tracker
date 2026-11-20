@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
-    /** @use HasFactory<\Database\Factories\CompanyFactory> */
+    /** @use HasFactory<CompanyFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -18,7 +18,7 @@ class Company extends Model
         'location',
     ];
 
-    public function jobApplications(): HasMany //1 company has many job application.
+    public function jobApplications(): HasMany // 1 company has many job application.
     {
         return $this->hasMany(JobApplication::class);
     }
