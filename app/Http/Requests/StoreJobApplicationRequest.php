@@ -5,12 +5,12 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreJobApplication extends FormRequest
+class StoreJobApplicationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool //utk permission.
+    public function authorize(): bool // utk permission.
     {
         return true;
     }
@@ -20,7 +20,7 @@ class StoreJobApplication extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array //untk input.
+    public function rules(): array // untk input.
     {
         return [
             //

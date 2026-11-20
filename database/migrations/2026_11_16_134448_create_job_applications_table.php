@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('job_applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->index()->constrained()->cascadeOnDelete(); //kalau company delete application company dia pun di delte
+            $table->foreignId('company_id')->index()->constrained()->cascadeOnDelete(); // kalau company delete application company dia pun di delte
             $table->string('role_title');
             $table->string('status')->default('wishlist')->index();
-            $table->unsignedInteger('salary_min')->nullable(); //unasigned akan sentiasa +ve
+            $table->unsignedInteger('salary_min')->nullable(); // unasigned akan sentiasa +ve
             $table->unsignedInteger('salary_max')->nullable();
             $table->date('applied_on')->nullable();
             $table->text('notes')->nullable();

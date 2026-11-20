@@ -49,7 +49,7 @@ class JobApplicationController extends Controller
 
     public function show(JobApplication $application): View
     {
-        return view('applications.show', ['application' => $application]); //binding
+        return view('applications.show', ['application' => $application]); // binding
     }
 
     public function edit(JobApplication $application): View
